@@ -13,8 +13,8 @@ func init() {
 	ErrorCodeMap["E00404"] = "无相关记录"
 }
 
-func Error(err error) string {
-	return MongoeError{Err: err}.Error()
+func Error(err error) error {
+	return MongoeError{Err: err}
 }
 
 type MongoeError struct {
@@ -30,6 +30,10 @@ func (e MongoeError) Error() string {
 	switch code {
 	case "E11000":
 		body = []interface{}{getStructBody(errStr)}
+	}
+
+	if ErrorCodeMap[code] == "" {
+		body = []interface{}{errStr}
 	}
 
 	return fmt.Sprintf(ErrorCodeMap[code], body...)
