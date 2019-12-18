@@ -25,3 +25,16 @@ func main() {
 	_, err := *Collection.InsertOne(db.Ctx, insertData)
 }
 ```
+
+## 将报错信息转换为中文或自定义文案
+
+`mongoe.Error` 函数可以将 `mongo-go-driver` 返回的错误转换成更友好的中文提示，你也可以使用 `MongoeError` 结构体自己进行组装。
+
+```go
+insertData := mongoe.ToBson(prize)
+_, err := db.PrizesColl.InsertOne(db.Ctx, insertData)
+if err != nil {
+	ctx.End(409, mongoe.Error(err)) // "%s 数据重复，请修改后提交"
+	return
+}
+```
