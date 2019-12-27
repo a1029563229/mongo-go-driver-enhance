@@ -9,6 +9,18 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
+// 忽略 bson.M 中的空值
+func OmitEmpty(m bson.M) bson.M {
+	noEmptyM := bson.M{}
+	for k, v := range m {
+		value := reflect.ValueOf(v)
+		if !value.IsZero() {
+			noEmptyM[k] = v
+		}
+	}
+	return noEmptyM
+}
+
 // convert struct to bson list
 func ToBsonList(structs interface{}) []bson.M {
 	var record []bson.M
