@@ -55,24 +55,22 @@ func ToBson(structure interface{}) bson.M {
 		case reflect.Int, reflect.Int64:
 			v := field.Int()
 			result[key] = v
-			break
+		case reflect.Float32, reflect.Float64:
+			v := field.Float()
+			result[key] = v
 		case reflect.String:
 			v := field.String()
 			result[key] = v
-			break
 		case reflect.Slice:
 			v := field.Interface()
 			result[key] = v
-			break
 		// ObjectID
 		case reflect.Array:
 			f := reflect.Indirect(v).FieldByName(name)
 			result[key] = f.Interface()
-			break
 		case reflect.Struct:
 			v := getField(structure, name)
 			result[key] = v
-			break
 		}
 	}
 
